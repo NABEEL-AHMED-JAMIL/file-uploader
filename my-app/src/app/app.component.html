@@ -1,0 +1,145 @@
+<br><br>
+<h3 style="text-align: center;">Server Response {{response}}</h3>
+<div class="container">
+<div class="panel-group" id="accordion">
+   <!-- accordion-1 -->
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <h4 class="panel-title" style="display:inline;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Single File Upload</a>
+         </h4>
+         <p style="display:inline;float:right;">Status :- {{single_file_message}}</p>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse">
+         <div class="row">
+            <div class="col-sm-2">
+               <div class="form-group panel-body">
+                  <label for="file">Choose File</label>
+                  <input type="file" id="file" (change)="singleFileUpload($event.target.files[0])">
+               </div>
+            </div>
+            <div class="col-sm-10">
+               <div class="panel-body" *ngIf="single_file_imgURL" style="padding: 5px;float: right;margin-top: 10px;">
+                  <img [src]="single_file_imgURL" height="65px">
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- accordion-2 -->
+      <div class="panel-heading">
+         <h4 class="panel-title" style="display:inline;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Multiple File Upload</a>
+         </h4>
+         <p style="display:inline;float:right;">Status :- {{multiple_files_message}}</p>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+         <div class="row">
+            <div class="col-sm-2">
+               <div class="form-group panel-body">
+                  <label for="file2">Choose File</label>
+                  <input type="file" id="file2" (change)="multipleFileUpload($event.target.files)" multiple>
+               </div>
+            </div>
+            <div class="col-sm-10" style="text-align: end;">
+               <div class="panel-body" *ngIf="multiple_files_imgURL.length">
+                  <img *ngFor="let file of multiple_files_imgURL" [src]="file" height="65px" style="display:inline-flex;">
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- accordion 3 -->
+      <div class="panel-heading">
+         <h4 class="panel-title" style="display:inline;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Single Object With File</a>
+         </h4>
+         <p style="display:inline;float:right;">Status :- {{singleFileWithObjectMessage}}</p>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+         <div class="row" style="margin-left:0px;margin-top:10px;margin-bottom:15px;">
+            <form [formGroup]="singleFileWithObject" (ngSubmit)="singleFileUploadWithObject()">
+            <div formGroupName="data">
+               <div class="col-sm-3">
+                  <label>Name</label>
+                  <input type="text" class="form-control" formControlName="name" placeholder="Enter Name">
+               </div>
+               <div class="col-sm-3">
+                  <label>Quantity</label>
+                  <input type="number" class="form-control" formControlName="quantity" placeholder="Enter Quantity">
+               </div>
+            </div>
+            <div class="col-sm-3">
+               <label>File</label>
+               <input type="file" class="form-control" formControlName="file" style="padding:4px 12px;" (change)="isfileTypeValid($event.target.files[0])" placeholder="Enter File">
+            </div>
+            <div class="col-sm-3">
+               <input type="submit" class="form-control" value="Submit" [disabled]="singleFileWithObject?.invalid" style="width:90%;margin-top:23px;">
+            </div>
+            </form>            
+         </div>
+      </div>
+      <!-- accordion 4 -->
+      <div class="panel-heading">
+         <h4 class="panel-title" style="display:inline;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Single Object With Files</a>
+         </h4>
+         <p style="display:inline;float:right;">Status :- {{multipleFilesUploadWithObjectMessage}}</p>
+      </div>
+      <div id="collapse4" class="panel-collapse collapse">
+         <div class="row" style="margin-left:0px;margin-top:10px;margin-bottom:15px;">
+            <form [formGroup]="multipleFileWithObject" (ngSubmit)="multipleFilesUploadWithObject()">
+            <div formGroupName="data">
+               <div class="col-sm-3">
+                  <label>Name</label>
+                  <input type="text" class="form-control" formControlName="name" placeholder="Enter Name">
+               </div>
+               <div class="col-sm-3">
+                  <label>Quantity</label>
+                  <input type="number" class="form-control" formControlName="quantity" placeholder="Enter Quantity">
+               </div>
+            </div>
+            <div class="col-sm-3">
+               <label>Files</label>
+               <input type="file" class="form-control" formControlName="files" style="padding:4px 12px;" (change)="isfilesTypeValid($event.target.files)" placeholder="Enter Files" multiple>
+            </div>
+            <div class="col-sm-3">
+               <input type="submit" class="form-control" value="Submit" [disabled]="multipleFileWithObject?.invalid" style="width:90%;margin-top:23px;">
+            </div>
+            </form>
+         </div>
+      </div>
+      <!-- collapse-5 -->
+      <div class="panel-heading">
+         <h4 class="panel-title" style="display:inline;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">Files Upload With Object</a>
+         </h4>
+         <p style="display:inline;float:right;">Status :- {{type1Message}} ||  {{type2Message}} || {{filesUploadWithObjectMessage}}</p>
+      </div>
+      <div id="collapse6" class="panel-collapse collapse">
+         <div class="row" style="margin-left:0px;margin-top:10px;margin-bottom:15px;">
+            <form [formGroup]="filesWithObject" (ngSubmit)="filesUploadsWithObject()">
+               <div formGroupName="data">
+                  <div class="col-sm-2">
+                     <label>Name</label>
+                     <input type="text" class="form-control" formControlName="name" placeholder="Enter Name">
+                  </div>
+                  <div class="col-sm-2">
+                     <label>Quantity</label>
+                     <input type="number" class="form-control" formControlName="quantity" placeholder="Enter Quantity">
+                  </div>
+               </div>
+               <div class="col-sm-3">
+                  <label>File</label>
+                  <input type="file" class="form-control" formControlName="file" style="padding:4px 12px;" (change)="isfilesUploadsTypeValid(1,$event.target.files[0],null)" placeholder="Enter File">
+               </div>
+               <div class="col-sm-3">
+                  <label>Files</label>
+                  <input type="file" class="form-control" formControlName="files" style="padding:4px 12px;" (change)="isfilesUploadsTypeValid(2,null,$event.target.files)" placeholder="Enter Files" multiple>
+               </div>
+               <div class="col-sm-2">
+                  <input type="submit" class="form-control" value="Submit" [disabled]="filesWithObject?.invalid" style="width:90%;margin-top:23px;">
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
