@@ -155,7 +155,7 @@
                <div class="panel-body" style="height:200px;overflow:auto;">
                   <div id="main-form-content" formArrayName="items">
                      <table id="tbl-upload" class="table table-bordered">
-                        <tbody *ngFor="let item of fileWithObjectHttpServelt.get('items').controls.reverse(); let i = index;" [formGroup]="item">
+                        <tbody *ngFor="let item of fileWithObjectHttpServelt.get('items')['controls'].reverse(); let i = index;" [formGroup]="item">
                            <tr *ngIf="i==0" class="active">
                               <th>Document Name</th>
                               <th>Document Description</th>
@@ -198,7 +198,7 @@
                <div class="panel-body" style="height:200px;overflow:auto;">
                   <div id="main-form-content" formArrayName="items">
                      <table id="tbl-upload" class="table table-bordered">
-                        <tbody *ngFor="let item of multipleFilesUploadWithHttpServert.get('items').controls.reverse(); let i = index;" [formGroup]="item">
+                        <tbody *ngFor="let item of multipleFilesUploadWithHttpServert.get('items')['controls'].reverse(); let i = index;" [formGroup]="item">
                            <tr *ngIf="i==0" class="active">
                               <th>Document Name</th>
                               <th>Document Description</th>
