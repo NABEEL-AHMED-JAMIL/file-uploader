@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpRequest, HttpEventType, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root'
-})
+
+@Injectable({ providedIn: 'root' })
 export class FileserviceService {
 
   private localhostUrl:string = "http://localhost:9191/api";
@@ -13,6 +12,8 @@ export class FileserviceService {
   private singleFileUploadWithObjectUrl:string = this.localhostUrl + "/filestore/03153817177/appsport.com/singleFileUploadWithObject/ballistic";
   private multipleFilesUploadWithObjectUrl:string = this.localhostUrl + "/filestore/03153817177/appsport.com/multipleFilesUploadWithObject/ballistic";
   private filesUploadsWithObjectUrl:string = this.localhostUrl + "/filestore/03153817177/appsport.com/filesUploadsWithObject/ballistic";
+  private fileUploadWithHttpServertUrl:string = this.localhostUrl + "/singlefile/filestore/03153817177/appsport.com/ballistic";
+  private multiplefileUploadWithHttpServertUrl:string = this.localhostUrl + "/multiples/filestore/03153817177/appsport.com/ballistic";
   // pending-------
   private listOfObjectsWithSingleFileUrl:string = this.localhostUrl + "/filestore/03153817177/appsport.com/listOfObjectsWithSingleFile/ballistic";
   private listOfObjectsWithMultipleFilesUrl:string = this.localhostUrl + "/filestore/03153817177/appsport.com/listOfObjectsWithMultipleFiles/ballistic";
@@ -34,76 +35,50 @@ export class FileserviceService {
   public constructor(private http:HttpClient) {}
 
   // done
-  public serverUpCheck():any {
-    return this.http.get(this.serverUpCheckUrl, this.headers);
-  }
-
+  public serverUpCheck():any { return this.http.get(this.serverUpCheckUrl,this.headers); }
   // done
   public singleFileUpload(file:File):any {
     const formData:FormData = new FormData();
-    formData.append('file', file, file.name);
+    formData.append('file',file,file.name);
     return this.http.post(this.singleFileUploadUrl,formData);
   }
-
   // done
   public multipleFileUpload(files:FileList):any {
     const formData:FormData = new FormData();
-    for (let index = 0; index < files.length; index++) {
-      formData.append('files', files[index], files[index].name);
-    }
-    return this.http.post(this.multipleFileUploadUrl, formData);
+    for (let index = 0; index < files.length; index++) { formData.append('files',files[index],files[index].name); }
+    return this.http.post(this.multipleFileUploadUrl,formData);
   }
-
   // done
-  public singleFileUploadWithObject(fileWithObject:any): any {
-    return this.http.post(this.singleFileUploadWithObjectUrl, fileWithObject);
-  }
-
+  public singleFileUploadWithObject(object:any):any { return this.http.post(this.singleFileUploadWithObjectUrl,object); }
   // done
-  public multipleFilesUploadWithObject(fileWithObject:any): any {
-    return this.http.post(this.multipleFilesUploadWithObjectUrl, fileWithObject);
-  }
-
+  public multipleFilesUploadWithObject(object:any):any { return this.http.post(this.multipleFilesUploadWithObjectUrl,object); }
   // done
-  public filesUploadsWithObject(fileWithObject:any): any {
-    return this.http.post(this.filesUploadsWithObjectUrl, fileWithObject);
-  }
+  public filesUploadsWithObject(object:any):any { return this.http.post(this.filesUploadsWithObjectUrl,object); }
+  // HTTP-SERVERT_REQUEST
+  // done
+  public fileUploadWithHttpServert(object:any):any { return this.http.post(this.fileUploadWithHttpServertUrl,object); }
+  // done
+  public multiplefileUploadWithHttpServert(object:any):any { return this.http.post(this.multiplefileUploadWithHttpServertUrl,object); };
 
-  public listOfObjectsWithSingleFile(): any {
-    return this.http.post(this.listOfObjectsWithSingleFileUrl, null);
-    
-  }
-
-  public listOfObjectsWithMultipleFiles(): any {
-    return this.http.post(this.listOfObjectsWithMultipleFilesUrl, null);
-  }
   
-  public listOfObjectsWithFiles(): any {
-    return this.http.post(this.listOfObjectsWithFilesUrl, null);
-  }
 
-  public singleFileUploadWithBase64Object(): any {
-    return this.http.post(this.singleFileUploadWithBase64ObjectUrl, null);
-  }
+  // pendding
+  public listOfObjectsWithSingleFile(object:any):any { return this.http.post(this.listOfObjectsWithSingleFileUrl,object);}
 
-  public multipleFileUploadWithBase64Object(): any {
-    return this.http.post(this.multipleFileUploadWithBase64ObjectUrl, null);
-  }
+  public listOfObjectsWithMultipleFiles(object:any):any { return this.http.post(this.listOfObjectsWithMultipleFilesUrl,object); }
+  
+  public listOfObjectsWithFiles(object:any):any { return this.http.post(this.listOfObjectsWithFilesUrl,object); }
 
-  public filesUploadsWithBase64Object(): any {
-    return this.http.post(this.filesUploadsWithBase64ObjectUrl, null);
-  }
+  public singleFileUploadWithBase64Object(object:any):any { return this.http.post(this.singleFileUploadWithBase64ObjectUrl,object); }
 
-  public listOfBase64ObjectsWithSingleFile(): any {
-    return this.http.post(this.listOfBase64ObjectsWithSingleFileUrl, null);
-  }
+  public multipleFileUploadWithBase64Object(object:any):any { return this.http.post(this.multipleFileUploadWithBase64ObjectUrl,object); }
 
-  public listOfBase64ObjectsWithMultipleFiles(): any {
-    return this.http.post(this.listOfBase64ObjectsWithMultipleFilesUrl, null);
-  }
+  public filesUploadsWithBase64Object(object:any):any { return this.http.post(this.filesUploadsWithBase64ObjectUrl,object); }
 
-  public listOffilesUploadsWithBase64Object(): any {
-    return this.http.post(this.listOffilesUploadsWithBase64ObjectUrl, null);
-  }
+  public listOfBase64ObjectsWithSingleFile(object:any):any { return this.http.post(this.listOfBase64ObjectsWithSingleFileUrl,object); }
+
+  public listOfBase64ObjectsWithMultipleFiles(object:any):any { return this.http.post(this.listOfBase64ObjectsWithMultipleFilesUrl,object); }
+
+  public listOffilesUploadsWithBase64Object(object:any):any { return this.http.post(this.listOffilesUploadsWithBase64ObjectUrl,object); }
 
 }

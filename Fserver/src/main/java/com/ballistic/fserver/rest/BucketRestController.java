@@ -1,42 +1,50 @@
 package com.ballistic.fserver.rest;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /* * * * * * * * * * * * * * * * * * *
  *  Note :- Bucket-Management-System *
  * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Note :- These Api proved the handle of Bucket related function *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 public abstract class BucketRestController {
 
     public final String pingResponse = "{ \"response\" : \"pong\" }";
 
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    * Note :- These Api proved the handle of Bucket related function *
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+    /* * * * * * * * * * * * * * * * *Task-Done* * * * * * * * * * * * * * * * * * * * *
+     * Note :- This Api Send the Name For Bucket (Bucket Name Unique In Account Level) * // Test Pass :- (Postman + Angular cli)
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     @RequestMapping(value = "/filestore/ballistic/appsport.com/createBucket", method = RequestMethod.POST)
     @ResponseBody
     public String createBucket(@RequestBody String name) {
         return pingResponse;
     }
 
-    @RequestMapping(value = "/filestore/ballistic/appsport.com/deleteBucket", method = RequestMethod.DELETE)
+    /* * * * * * * * * * * * * * * * *Task-Done* * * * * * * * * * * * * * * * * * * * *
+     * Note :- This Api Send the Name For Bucket (Bucket Name Unique In Account Level) * // Test Pass :- (Postman + Angular cli)
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    @RequestMapping(value = "/filestore/ballistic/appsport.com/deleteBucket", params = { "token", "name" }, method = RequestMethod.DELETE)
     @ResponseBody
-    public String deleteBucket(@RequestBody String name) {
+    public String deleteBucket(@RequestParam("token") String token, @RequestParam("name") String name) {
         return pingResponse;
     }
 
-    @RequestMapping(value = "/filestore/ballistic/appsport.com/updateBucket", method = RequestMethod.PUT)
+    /* * * * * * * * * * * * * * * **Task-Done* * * * * * * * * * * * * * * * * * * * * * * *
+     * Note :- This Api Send the Name For Update-Bucket(Bucket Name Unique In Account Level)* // Test Pass :- (Postman + Angular cli)
+     ** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    @RequestMapping(value = "/filestore/ballistic/appsport.com/updateBucket", params = { "name" }, method = RequestMethod.PUT)
     @ResponseBody
-    public String updateBucket(@RequestBody String name) {
+    public String updateBucket(@RequestParam("name") String name) {
         return pingResponse;
     }
 
-    @RequestMapping(value = "/filestore/ballistic/appsport.com/createDownloadUrl", method = RequestMethod.GET)
+    /* * * * * * * * * *Task-Done* * * * * * * * * * * * **
+     * Note :- This Api Create the Copy of Url For Bucket * // Test Pass :- (Postman + Angular cli)
+     ** * * * * * * * * * * * * * * * * * * * * * * * * * */
+    @RequestMapping(value = "/filestore/ballistic/appsport.com/createDownloadUrl", params = { "token" }, method = RequestMethod.GET)
     @ResponseBody
-    public String createDownloadUrlForBucket() {
+    public String createDownloadUrlForBucket(@RequestParam("token") String token) {
         return pingResponse;
     }
-
 }

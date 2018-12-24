@@ -6,10 +6,10 @@ import java.util.List;
 public class Bucket {
 
     private String id;
-    private String uuid;
+    private String uuid; // token decode the uuid
     private String name;
     private String token; // token? :- token:-bucket' -:
-    private String url;
+    private String url; // bucket store location
     private List<String> downloadUrl;
     private Date deleteDate;
     private Date updateDate;

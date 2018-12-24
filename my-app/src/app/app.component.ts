@@ -2,6 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { FileserviceService } from './fileservice.service';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 
+
+export interface Base64File {
+  filename:string;
+  filetype:string;
+  value:string;
+}
+
+export interface HttpRequestInfo {
+  data:Data;
+  fileInfo?:FileInfo;
+  fileInfos?:FileInfo[];
+}
+
+export interface Data {
+  doc_name:string;
+  doc_description:string;
+}
+
+export interface FileInfo {
+  file_name:string;
+  file_size:number;
+}
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,25 +33,26 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@ang
 })
 export class AppComponent implements OnInit {
 
-  private response:string = "400";
-  // from with object's
-  private singleFileWithObject:FormGroup;
-  private multipleFileWithObject:FormGroup;
-  private filesWithObject:FormGroup;
+  public response:string = "400";
+  public singleFileWithObject:FormGroup;
+  public multipleFileWithObject:FormGroup;
+  public filesWithObject:FormGroup;
+  // httpserverltRequest
+  public fileWithObjectHttpServelt:FormGroup;
+  public multipleFilesUploadWithHttpServert:FormGroup;
   // -------Pending-----
-  private objectsWithSingleFile:FormGroup;
-  private objectsWithMultipleFiles:FormGroup;
-  private objectsWithFiles:FormGroup;
+  public objectsWithSingleFile:FormGroup;
+  public objectsWithMultipleFiles:FormGroup;
+  public objectsWithFiles:FormGroup;
   //---Base64Encode Data
-  private base64ObjectWithSingleFileUpload:FormGroup;
-  private base64ObjectWithmultipleFileUpload:FormGroup;
-  private base64ObjectWithfilesUploads:FormGroup;
-  private base64ObjectsWithSingleFile:FormGroup;
-  private base64ObjectsWithMultipleFiles:FormGroup;
-  private base64ObjectWithfiles:FormGroup;
+  public base64ObjectWithSingleFileUpload:FormGroup;
+  public base64ObjectWithMultipleFileUpload:FormGroup;
+  public base64ObjectWithfilesUploads:FormGroup;
+  public base64ObjectsWithSingleFile:FormGroup;
+  public base64ObjectsWithMultipleFiles:FormGroup;
+  public base64ObjectWithfiles:FormGroup;
   
-  public constructor(private fs:FileserviceService, private fb:FormBuilder) {}
-
+  public constructor(public fs:FileserviceService, public fb:FormBuilder) {}
 
   public ngOnInit():void {
 
@@ -40,32 +65,47 @@ export class AppComponent implements OnInit {
     });
     //--------------SingleFileWithObject--------------
     this.singleFileWithObject = this.fb.group({
-      data : new FormGroup({
-        name: new FormControl('', Validators.required),
-        quantity: new FormControl('', Validators.required),  
+      data: new FormGroup({
+        name: new FormControl('',Validators.required),
+        quantity: new FormControl('',Validators.required),  
       }),
-      file : new FormControl()
+      file: new FormControl()
     });
     //--------------MultipleFileWithObject--------------
     this.multipleFileWithObject = this.fb.group({
-      data : new FormGroup({
-        name: new FormControl('', Validators.required),
-        quantity: new FormControl('', Validators.required),  
+      data: new FormGroup({
+        name: new FormControl('',Validators.required),
+        quantity: new FormControl('',Validators.required),  
       }),
-      files : new FormControl()
+      files: new FormControl()
     });
     //--------------FilesWithObject--------------
     this.filesWithObject = this.fb.group({
-      data : new FormGroup({
-        name: new FormControl('', Validators.required),
-        quantity: new FormControl('', Validators.required),  
+      data: new FormGroup({
+        name: new FormControl('',Validators.required),
+        quantity: new FormControl('',Validators.required),  
       }),
-      file : new FormControl(),
-      files : new FormControl()
+      file: new FormControl(),
+      files: new FormControl()
     });
-    //--------------ObjectsWithSingleFile---------
+    //--------------HTTP-SERVERT_REQUEST-----------
+    this.fileWithObjectHttpServelt = this.fb.group({
+      items: this.fb.array([
+        this.buildItem(0),this.buildItem(0)
+      ])
+    });
+    this.multipleFilesUploadWithHttpServert = this.fb.group({
+      items: this.fb.array([
+        this.buildItem(1),this.buildItem(1)        
+      ])
+    });
+   //------------------------End----------------------
+    
+
+
+    //-------------------------------
     this.objectsWithSingleFile = this.fb.group({
-      objects:this.fb.array([this.buildItem(1)])
+      objects:this.fb.array([this.buildItem(2)])
     });
     //-------------------------------
     this.objectsWithMultipleFiles = this.fb.group({
@@ -87,8 +127,8 @@ export class AppComponent implements OnInit {
             name: new FormControl('', Validators.required),
             quantity: new FormControl('', Validators.required),  
           }),
-          file : new FormControl(),
-          files : new FormControl()
+          file: new FormControl(),
+          files: new FormControl()
         }
       ])
     });
@@ -101,7 +141,7 @@ export class AppComponent implements OnInit {
       file : new FormControl(),
     });
     //-------------------------------
-    this.base64ObjectWithmultipleFileUpload = this.fb.group({
+    this.base64ObjectWithMultipleFileUpload = this.fb.group({
       data : new FormGroup({
         name: new FormControl('', Validators.required),
         quantity: new FormControl('', Validators.required),  
@@ -156,18 +196,51 @@ export class AppComponent implements OnInit {
     });
   }
 
+  public buildItem(objectType:number):any {
+    //FileWithObjectHttpServelt
+    if(objectType == 0) {
+      this.totalfiles.push(null);
+      return new FormGroup({
+        file: new FormControl(),
+        data: new FormGroup({
+          doc_name: new FormControl('',Validators.required),
+          doc_description: new FormControl('',Validators.required),  
+        })
+      });
+    } else if(objectType == 1) {
+      this.singlefiles.push(null);
+      this.multiplefiles.push(null);
+      return new FormGroup({
+        file: new FormControl(File),
+        files: new FormControl(FileList),
+        data: new FormGroup({
+          doc_name: new FormControl('',Validators.required),
+          doc_description: new FormControl('',Validators.required),  
+        })
+      });
+    } else if(objectType == 2) {
+      return new FormGroup({
+        data: new FormGroup({
+          name: new FormControl('',Validators.required),
+          quantity: new FormControl('',Validators.required),  
+        }),
+        file: new FormControl(File)
+      });
+    }
+  }
+
   /* * * * * * * * * * * * * * * * * * * * * *
-   * Handle the Single File With Spring Api  *
+   * Handle the Single File With Spring Api  *  // Test Pass :- (Postman + Angular cli)
    * * * * * * * * * * * * * * * * * * * * * */
   //-------------------------------------------
   public single_file_message:string = "-x-x-";
-  private single_file_imgURL:any;
+  public single_file_imgURL:any;
   //-------------------------------------------
-  private singleFileUpload(file:File):any {
+  public singleFileUpload(file:File):any {
     if(this.isServerActive()) { this.singleFilePreviewAndSubmit(file); }
   }
 
-  private singleFilePreviewAndSubmit(file:File):void {
+  public singleFilePreviewAndSubmit(file:File):void {
     if(file == undefined) {
       this.single_file_message = "Process NoT Perform Due to File Not Valid";
       return;    
@@ -199,13 +272,13 @@ export class AppComponent implements OnInit {
   }
 
   /* * * * * * * * * * * * * * * * * * * * * * *
-   * Handle the Multiple Files With Spring Api *
+   * Handle the Multiple Files With Spring Api * // Test Pass :- (Postman + Angular cli)
    * * * * * * * * * * * * * * * * * * * * * * */
   //----------------------------------------------
-  private multiple_files_message:string = "-x-x-";
-  private multiple_files_imgURL = new Array<string>();
+  public multiple_files_message:string = "-x-x-";
+  public multiple_files_imgURL = new Array<string>();
   //-----------------------------------------------
-  private multipleFileUpload(files:FileList):any {
+  public multipleFileUpload(files:FileList):any {
     if(this.isServerActive() && files.length > 0) {
       this.multipleFilesPreviewAndSubmit(files);
     } else {
@@ -213,7 +286,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private multipleFilesPreviewAndSubmit(files:FileList):void {
+  public multipleFilesPreviewAndSubmit(files:FileList):void {
     // check :- only send 5 image at time
     if(files.length > 6) {
       this.multiple_files_message = "Only 5 images are supported.";
@@ -232,9 +305,7 @@ export class AppComponent implements OnInit {
       }
       this.multiple_files_message +=  "("+file.type + ","+file.name+")"; 
       let reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.multiple_files_imgURL.push(e.target.result);
-      }
+      reader.onload = (e: any) => { this.multiple_files_imgURL.push(e.target.result); }
       reader.readAsDataURL(file);
     }
     // process for post the list of files
@@ -250,18 +321,17 @@ export class AppComponent implements OnInit {
     }, error => {
       console.log("Error :- " + JSON.stringify(error));
     });
-    
   }
   
   /* * * * * * * * * * * * * * * * * * * * * * *
-  * Handle the Single File With Obj Spring Api *
+  * Handle the Single File With Obj Spring Api * // Test Pass :- (Postman + Angular cli)
   * * * * * * * * * * * * * * * * * * * * * * **/
   //---------------------------------------------
-  private singleFileWithObjectMessage:string = "-x-x-";
-  private singleFileFrom:any = new FormData();
+  public singleFileWithObjectMessage:string = "-x-x-";
+  public singleFileFrom:any = new FormData();
   //--------------------------------------------
   // {file,data} // file
-  private singleFileUploadWithObject():any {
+  public singleFileUploadWithObject():any {
     if(this.isServerActive()) {
       if(this.singleFileWithObjectMessage != "Image Accept.") {
         this.singleFileWithObjectMessage = "Process NoT Perform Due to File Not Valid";
@@ -273,6 +343,7 @@ export class AppComponent implements OnInit {
             setTimeout(() => {
               alert("Single File With Object Save");
               this.singleFileWithObjectMessage = "-x-x-";
+              this.singleFileFrom  = new FormData();
             }, 1000);
           }
         },error => {
@@ -282,7 +353,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private isfileTypeValid(file:File):void {
+  public isfileTypeValid(file:File):void {
     if(file == undefined || file == null) {
       this.singleFileWithObjectMessage = "Process NoT Perform Due to File Not Valid";
       return;    
@@ -296,14 +367,14 @@ export class AppComponent implements OnInit {
   } 
 
   /* * * * * * * * * * * * * * * * * * * * * * *  *
-  * Handle the Multiple Files With Obj Spring Api *
+  * Handle the Multiple Files With Obj Spring Api * // Test Pass :- (Postman + Angular cli)
   * * * * * * * * * * * * * * * * * * * * * * * * */
   //--------------------------------------------
-  private multipleFilesUploadWithObjectMessage:string = "-x-x-";
-  private multipleFilesFrom:any = new FormData();
+  public multipleFilesUploadWithObjectMessage:string = "-x-x-";
+  public multipleFilesFrom:any = new FormData();
   //--------------------------------------------
   // {files,data} // files
-  private multipleFilesUploadWithObject():any {
+  public multipleFilesUploadWithObject():any {
     if(this.isServerActive()) {
       if(this.multipleFilesUploadWithObjectMessage != "Image's Accept.") {
         this.multipleFilesUploadWithObjectMessage = "Process NoT Perform Due to File Not Valid";
@@ -315,6 +386,7 @@ export class AppComponent implements OnInit {
             setTimeout(() => {
               alert("Multiple File's With Object Save");
               this.multipleFilesUploadWithObjectMessage = "-x-x-";
+              this.multipleFilesFrom = new FormData(); 
             }, 1000);
           }
         },error => {
@@ -324,7 +396,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private isfilesTypeValid(files:FileList):void {
+  public isfilesTypeValid(files:FileList):void {
     if(files == undefined) {
       this.multipleFilesUploadWithObjectMessage = "Process NoT Perform Due to File Not Valid";
       return;
@@ -347,16 +419,16 @@ export class AppComponent implements OnInit {
   }
 
   /* * * * * * * * * * * * * * * * * * * *
-  * Handle the Files With Obj Spring Api *
+  * Handle the Files With Obj Spring Api *  // Test Pass :- (Postman + Angular cli)
   * * * * * * * * * * * * * * * * * * * **/
  //--------------------------------------------
-  private filesUploadWithObjectMessage:string = "-x-x-";
-  private type1Message:string = "-x-x-";
-  private type2Message:string = "-x-x-";
-  private multipleFilesFromObject:any = new FormData();
+  public filesUploadWithObjectMessage:string = "-x-x-";
+  public type1Message:string = "-x-x-";
+  public type2Message:string = "-x-x-";
+  public multipleFilesFromObject:any = new FormData();
   //--------------------------------------------
   // {file,files,data} // file, files
-  private filesUploadsWithObject(): any {
+  public filesUploadsWithObject():any {
     if(this.isServerActive()) {
       if(this.type1Message != "Image Accept.") {
         this.type1Message = "Process NoT Perform Due to File Not Valid";
@@ -373,6 +445,7 @@ export class AppComponent implements OnInit {
             setTimeout(() => {
               alert("Image's && Image With Object Save");
               this.filesUploadWithObjectMessage = "-x-x-";
+              this.multipleFilesFromObject = new FormData();
             }, 1000);
           }
         },error => {
@@ -382,7 +455,7 @@ export class AppComponent implements OnInit {
     }
   }
   
-  private isfilesUploadsTypeValid(fileType:number,file?:File,files?:FileList):void {
+  public isfilesUploadsTypeValid(fileType:number,file?:File,files?:FileList):void {
     if(fileType == 1) {
       if(file == undefined) {
         this.type1Message = "Process NoT Perform Due to File Not Valid";
@@ -403,7 +476,7 @@ export class AppComponent implements OnInit {
         return;
       } else {
         for (let index = 0; index < files.length; index++) {
-          const file = files[index];
+          const file:File = files[index];
           // check :- only support images for upload
           if (file.type.match(/image\/*/) == null) {
             // if any of the file not image then show message
@@ -419,13 +492,161 @@ export class AppComponent implements OnInit {
 
   /* * * * * * * * * * * * * * * * * * * *
   * Handle the Files With Obj Spring Api *
+  * With HttpServeletReqeust             *
+  * * * * * * * * * * * * * * * * * * * **/
+  public totalfiles:File[] = [];
+  public fileUploadWithHttpServert(objects:any):any {
+    if(this.isServerActive()) {
+      let main_form: FormData = new FormData();
+      let allHttReqeustInfo: HttpRequestInfo[] = [];
+      for (let index = 0; index < objects.items.length; index++) {
+        let object:any = objects.items[index];
+        let file:File = this.totalfiles[index];
+        let file_name = null;
+        let file_size = null;
+        if(file != null) {
+          // uuid need for remove the duplication name
+          file_name = this.guid()+"-"+file.name;
+          file_size = file.size;
+          main_form.append(file_name,file);
+        }
+
+        let httpRequetInfo: HttpRequestInfo = {
+          data: { doc_description: object.data.doc_description, doc_name: object.data.doc_name },
+          fileInfo: {file_name:file_name, file_size:file_size}
+        };
+
+        allHttReqeustInfo.push(httpRequetInfo);      
+      }
+      main_form.append("request",JSON.stringify(allHttReqeustInfo));
+      this.fs.fileUploadWithHttpServert(main_form).
+        subscribe((response: any) => {
+          if(response['response'] == "pong") {
+            //console.log("You are Successfully Send the Request");
+            setTimeout(() => { 
+              alert("You are Successfully Send the Request");
+              this.totalfiles = [];
+            },1000);
+            }
+      },error => {
+        console.log("Error :- " + JSON.stringify(error));
+      });
+    }
+  }
+
+  private guid():any {
+    function s4():any { return Math.floor((1+Math.random())*0x10000).toString(16).substring(1); }
+    return s4()+s4()+'-'+s4()+'-'+s4()+'-'+s4()+'-'+s4()+s4()+s4();
+  }
+  
+  public get httpServertItems():FormArray { return this.fileWithObjectHttpServelt.get('items') as FormArray; };
+
+  public httpServertFileSelectionEvent(fileInput:File,index:number) { this.totalfiles[index] = fileInput; }
+
+  public httpServertAddItem():void { this.httpServertItems.push(this.buildItem(0)); }
+
+  public httpServertRemoveItem(index:number) { this.httpServertItems.removeAt(index); this.totalfiles.splice(index,1); }
+  
+  /* * * * * * * * * * * * * * * * * * * *
+  * Handle the Files With Obj Spring Api *
+  * With HttpServeletReqeust             *
+  * * * * * * * * * * * * * * * * * * * **/
+  public singlefiles:File[] = [];
+  public multiplefiles:any[] = []; // list of file's in index
+  public multiplefileUploadWithHttpServert(objects:any):any {
+    if(this.isServerActive()) {
+      let request: FormData = new FormData();
+      let httpRequetInfos: HttpRequestInfo[] = [];
+      for (let index = 0; index < objects.items.length; index++) {
+        let object = objects.items[index];
+        let file:File = this.singlefiles[index];
+        let files:FileList = this.multiplefiles[index];
+
+        let file_name = null;
+        let file_size = null;
+        if(file != null) {
+          file_name = this.guid()+"-"+file.name;
+          file_size = file.size;
+          request.append(file_name, file);
+        }
+
+        let allFileInfo:FileInfo[] = [];
+        if(files != null) {
+          for (let index = 0; index < files.length; index++) {
+            const file:File = files[index];
+            let fileInfo:FileInfo = {
+              file_name: this.guid()+"-"+file.name,
+              file_size: file.size
+            }
+            request.append(fileInfo.file_name, file);
+            allFileInfo.push(fileInfo);
+          }
+        }
+
+        let httpRequetInfo: HttpRequestInfo = {
+          data: { doc_description: object.data.doc_description, doc_name: object.data.doc_name },
+          fileInfo: { file_name:file_name, file_size:file_size },
+          fileInfos: allFileInfo
+        };
+
+        httpRequetInfos.push(httpRequetInfo);
+      }
+
+      request.append('request', JSON.stringify(httpRequetInfos));
+      // sending request
+      this.fs.multiplefileUploadWithHttpServert(request).
+      subscribe((response: any) => {
+        if(response['response'] == "pong") {
+          setTimeout(() => { 
+            alert("You are Successfully Send the Request");
+          this.singlefiles = [];
+          this.multiplefiles = [];
+        },1000);
+      }
+    },error => {
+      console.log("Error :- " + JSON.stringify(error));
+    });
+    }
+  };
+
+
+  public get httpServertsItems():FormArray { return this.multipleFilesUploadWithHttpServert.get('items') as FormArray; };
+
+  public httpServertsAddItem():void { this.httpServertsItems.push(this.buildItem(0)); }
+
+  public httpServertsRemoveItem(index:number) { 
+    this.httpServertsItems.removeAt(index);
+    this.singlefiles.splice(index,1); 
+    this.multiplefiles.splice(index,1); 
+  }
+
+  public httpServertsFileSelectionEvent(index:number,file?:File,files?:FileList):void {
+    if(file != null) {
+      this.singlefiles[index] = file;
+    }else if(files != null){
+      this.multiplefiles[index] = files;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  /* * * * * * * * * * * * * * * * * * * *
+  * Handle the Files With Obj Spring Api *
   * * * * * * * * * * * * * * * * * * * **/
   //--------------------------------------------
-  private objectsSingleFile:FormData[] = [];
-  private objectsSingleFileMessage = "-x-x-";
+  public objectsSingleFile:FormData[] = [];
+  public objectsSingleFileMessage = "-x-x-";
   //--------------------------------------------
   // [{file,data}] // file
-  private listOfObjectsWithSingleFile(): any {
+  public listOfObjectsWithSingleFile(): any {
     if(this.isServerActive()) {
       this.objectsWithSingleFile.get("objects").value.forEach(object => {
         
@@ -433,35 +654,22 @@ export class AppComponent implements OnInit {
     }    
   }
 
-  private insertIndext(object:any):void {
+  public insertIndext(object:any):void {
     this.objectsWithSingleFileArray.push(object);
     this.objectsSingleFile.push(new FormData());
   }
   
-  private deleteIndext(index:number):void{
+  public deleteIndext(index:number):void{
     this.objectsWithSingleFileArray.removeAt(index);
     this.objectsSingleFile.splice(index,1);
   }
   
-  private get objectsWithSingleFileArray(): FormArray{
+  public get objectsWithSingleFileArray(): FormArray{
 	  return this.objectsWithSingleFile.get('objects') as FormArray;
   }
 
-  public buildItem(objectType:number):any {
-    if(objectType == 1) {
-      console.log("Object Type :- " + objectType);
-      return new FormGroup({
-        data : new FormGroup({
-          name: new FormControl('', Validators.required),
-          quantity: new FormControl('', Validators.required),  
-        }),
-        file: new FormControl(File)
-      })
-    }
-  }
-
   // {files,data} // files
-  private listOfObjectsWithMultipleFiles(): any {
+  public listOfObjectsWithMultipleFiles(): any {
     if(this.isServerActive()) {}
   }
 
@@ -500,7 +708,7 @@ export class AppComponent implements OnInit {
     if(this.isServerActive()) {}
   }
 
-  private isServerActive():boolean { return this.response == "200" ? true: false; }
+  public isServerActive():boolean { return this.response == "200" ? true: false; }
 
 }
 

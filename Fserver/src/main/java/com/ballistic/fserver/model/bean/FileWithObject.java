@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "file", "files", "data" })
@@ -13,19 +14,23 @@ public class FileWithObject<T> {
     @JsonProperty("file")
     private MultipartFile file;
     @JsonProperty("files")
-    private MultipartFile[] files; // Note :- not support with api(singleFileUploadWithObject,listOfObjectsWithSingleFile)
+    private List<MultipartFile> files;
     @JsonRawValue
     @JsonProperty("data")
     private T data;
 
     public FileWithObject() { }
 
+    public FileWithObject(T data) {
+        this.data = data;
+    }
+
     public FileWithObject(MultipartFile file, T data) {
         this.file = file;
         this.data = data;
     }
 
-    public FileWithObject(MultipartFile[] files, T data) {
+    public FileWithObject(List<MultipartFile> files, T data) {
         this.files = files;
         this.data = data;
     }
@@ -33,10 +38,14 @@ public class FileWithObject<T> {
     public MultipartFile getFile() { return file; }
     public void setFile(MultipartFile file) { this.file = file; }
 
-    public MultipartFile[] getFiles() { return files; }
-    public void setFiles(MultipartFile[] files) { this.files = files; }
+    public List<MultipartFile> getFiles() { return files; }
+    public void setFiles(List<MultipartFile> files) { this.files = files; }
 
     public T getData() { return data; }
     public void setData(T data) { this.data = data; }
 
+    @Override
+    public String toString() {
+        return "FileWithObject{" + "file=" + file + ", files=" + files + ", data=" + data + '}';
+    }
 }

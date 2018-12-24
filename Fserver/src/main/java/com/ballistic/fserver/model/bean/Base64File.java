@@ -9,7 +9,7 @@ public class Base64File {
     @JsonProperty("filename")
     public String filename;
     @JsonProperty("filetype")
-    public String filetype;
+    public String filetype; // image,txt,json,csv file accept only
     @JsonProperty("value")
     public String value;
 
@@ -30,4 +30,8 @@ public class Base64File {
     public String getValue() { return value; }
     public void setValue(String value) { this.value = value; }
 
+    @Override
+    public String toString() {
+        return "Base64File{" + "filename='" + filename + '\'' + ", filetype='" + filetype + '\'' + ", value='" + value + '\'' + '}';
+    }
 }
