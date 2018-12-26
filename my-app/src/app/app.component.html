@@ -142,97 +142,137 @@
                </form>
             </div>
          </div>
-      </div>
-   </div>
-   <div class="panel panel-primary">
-      <div class="panel-heading" style="padding-bottom:15px;">
-         <b style="color:white;">HttpServletRequest For File Handling</b>         
-         <button style="float:right;" class="btn btn-sm btn-success" title="Add More" (click)="httpServertAddItem()">Add More</button>
-      </div>
-      <form [formGroup]="fileWithObjectHttpServelt" (ngSubmit)="fileUploadWithHttpServert(fileWithObjectHttpServelt.value)" #uploadDocumentsForm="ngForm" ngNativeValidate>
-         <div class="row">      
-            <div class="col-sm-12">
-               <div class="panel-body" style="height:200px;overflow:auto;">
-                  <div id="main-form-content" formArrayName="items">
-                     <table id="tbl-upload" class="table table-bordered">
-                        <tbody *ngFor="let item of fileWithObjectHttpServelt.get('items')['controls'].reverse(); let i = index;" [formGroup]="item">
-                           <tr *ngIf="i==0" class="active">
-                              <th>Document Name</th>
-                              <th>Document Description</th>
-                              <th style="width:10%;">Document File</th>
-                              <th style="text-align: center;">Remove</th>
-                           </tr>
-                           <tr formGroupName="data">
-                              <td>
-                                 <input type="text" class="form-control" name="doc_name" formControlName="doc_name" placeholder="Enter document Category">
-                              </td>
-                              <td>
-                                 <input type="text" class="form-control" name="doc_description" formControlName="doc_description" maxlength="100" placeholder="Enter document related descriptions">
-                              </td>
-                              <td>
-                                 <input style="margin-top:4px;" type="file" title="Browse Document" (change)="httpServertFileSelectionEvent($event.target.files[0],i)">
-                              </td>
-                              <td class="remove" style="text-align: center;">
-                                 <button type="button" class="btn btn-link" (click)="httpServertRemoveItem(i)">Delete</button>
-                              </td>
-                           </tr>                        
-                        </tbody>
-                     </table>
-                  </div>
+         <!-- collapse-6 -->
+         <div class="panel-heading">
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse7">List Of File's With Object's</a>
+            </h4>
+         </div>
+         <div id="collapse7" class="panel-collapse collapse">
+            <div class="panel-body">Panel Body</div>
+         </div>
+         <!-- collapse-7 -->
+         <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#collapse8">HttpServletRequest File Sending</a>
+            </h4>
+         </div>
+         <div id="collapse8" class="panel-collapse collapse" style="margin-left:10px;margin-right:10px;">
+            <div class="panel panel-primary">
+               <div class="panel-heading" style="padding-bottom:15px;">
+                  <b style="color:white;">HttpServletRequest For File Handling</b>         
+                  <button style="float:right;" class="btn btn-sm btn-success" title="Add More" (click)="httpServertAddItem()">Add More</button>
                </div>
-            </div>
-         </div>
-         <div class="panel-footer">
-            <input type="submit" class="form-control" value="Submit" [disabled]="fileWithObjectHttpServelt?.invalid">
-         </div>
-      </form>        
-   </div>
-   <div class="panel panel-primary" >
-      <div class="panel-heading" style="padding-bottom:15px;">
-         <b style="color:white;">HttpServletRequest For File Handling</b>
-         <button style="float:right;" class="btn btn-sm btn-success" title="Add More" (click)="httpServertsAddItem()">Add More</button>
-      </div>
-      <form [formGroup]="multipleFilesUploadWithHttpServert" (ngSubmit)="multiplefileUploadWithHttpServert(multipleFilesUploadWithHttpServert.value)" #uploadDocumentsForm="ngForm" ngNativeValidate>
-         <div class="row">
-            <div class="col-sm-12">
-               <div class="panel-body" style="height:200px;overflow:auto;">
-                  <div id="main-form-content" formArrayName="items">
-                     <table id="tbl-upload" class="table table-bordered">
-                        <tbody *ngFor="let item of multipleFilesUploadWithHttpServert.get('items')['controls'].reverse(); let i = index;" [formGroup]="item">
-                           <tr *ngIf="i==0" class="active">
-                              <th>Document Name</th>
-                              <th>Document Description</th>
-                              <th style="width:10%;">Document File</th>
-                              <th style="width:10%;">Document Files</th>
-                              <th style="text-align: center;">Remove</th>
-                           </tr>
-                           <tr formGroupName="data">
-                              <td>
-                                 <input type="text" class="form-control" name="doc_name" formControlName="doc_name" placeholder="Enter document Category">
-                              </td>
-                              <td>
-                                 <input type="text" class="form-control" name="doc_description" formControlName="doc_description" maxlength="100" placeholder="Enter document related descriptions">
-                              </td>
-                              <td>
-                                 <input style="margin-top:4px;" type="file" title="Browse Document" (change)="httpServertsFileSelectionEvent(i,$event.target.files[0],null)">
-                              </td>
-                              <td>
-                                 <input style="margin-top:4px;" type="file" title="Browse Document" (change)="httpServertsFileSelectionEvent(i,null,$event.target.files)" multiple>
-                              </td>
-                              <td class="remove" style="text-align: center;">
-                                 <button type="button" class="btn btn-link" (click)="httpServertsRemoveItem(i)">Delete</button>
-                              </td>
-                           </tr>                        
-                        </tbody>
-                     </table>
+               <form [formGroup]="fileWithObjectHttpServelt" (ngSubmit)="fileUploadWithHttpServert(fileWithObjectHttpServelt.value)" #uploadDocumentsForm="ngForm" ngNativeValidate>
+                  <div class="row">      
+                     <div class="col-sm-12">
+                        <div class="panel-body" style="height:200px;overflow:auto;">
+                           <div id="main-form-content" formArrayName="items">
+                              <table id="tbl-upload" class="table table-bordered">
+                                 <tbody *ngFor="let item of fileWithObjectHttpServelt.get('items')['controls'].reverse(); let i = index;" [formGroup]="item">
+                                    <tr *ngIf="i==0" class="active">
+                                       <th>Document Name</th>
+                                       <th>Document Description</th>
+                                       <th style="width:10%;">Document File</th>
+                                       <th style="text-align: center;">Remove</th>
+                                    </tr>
+                                    <tr formGroupName="data">
+                                       <td>
+                                          <input type="text" class="form-control" name="doc_name" formControlName="doc_name" placeholder="Enter document Category">
+                                       </td>
+                                       <td>
+                                          <input type="text" class="form-control" name="doc_description" formControlName="doc_description" maxlength="100" placeholder="Enter document related descriptions">
+                                       </td>
+                                       <td>
+                                          <input style="margin-top:4px;" type="file" title="Browse Document" (change)="httpServertFileSelectionEvent($event.target.files[0],i)">
+                                       </td>
+                                       <td class="remove" style="text-align: center;">
+                                          <button type="button" class="btn btn-link" (click)="httpServertRemoveItem(i)">Delete</button>
+                                       </td>
+                                    </tr>                        
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-               </div>
+                  <div class="panel-footer">
+                     <input type="submit" class="form-control" value="Submit" [disabled]="fileWithObjectHttpServelt?.invalid">
+                  </div>
+               </form>        
             </div>
-         </div>
-         <div class="panel-footer">
-            <input type="submit" class="form-control" value="Submit" [disabled]="multipleFilesUploadWithHttpServert?.invalid">
-         </div>
-      </form>        
+            <div class="panel panel-primary" >
+               <div class="panel-heading" style="padding-bottom:15px;">
+                  <b style="color:white;">HttpServletRequest For File Handling</b>
+                  <button style="float:right;" class="btn btn-sm btn-success" title="Add More" (click)="httpServertsAddItem()">Add More</button>
+               </div>
+               <form [formGroup]="multipleFilesUploadWithHttpServert" (ngSubmit)="multiplefileUploadWithHttpServert(multipleFilesUploadWithHttpServert.value)" #uploadDocumentsForm="ngForm" ngNativeValidate>
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="panel-body" style="height:200px;overflow:auto;">
+                           <div id="main-form-content" formArrayName="items">
+                              <table id="tbl-upload" class="table table-bordered">
+                                 <tbody *ngFor="let item of multipleFilesUploadWithHttpServert.get('items')['controls'].reverse(); let i = index;" [formGroup]="item">
+                                    <tr *ngIf="i==0" class="active">
+                                       <th>Document Name</th>
+                                       <th>Document Description</th>
+                                       <th style="width:10%;">Document File</th>
+                                       <th style="width:10%;">Document Files</th>
+                                       <th style="text-align: center;">Remove</th>
+                                    </tr>
+                                    <tr formGroupName="data">
+                                       <td>
+                                          <input type="text" class="form-control" name="doc_name" formControlName="doc_name" placeholder="Enter document Category">
+                                       </td>
+                                       <td>
+                                          <input type="text" class="form-control" name="doc_description" formControlName="doc_description" maxlength="100" placeholder="Enter document related descriptions">
+                                       </td>
+                                       <td>
+                                          <input style="margin-top:4px;" type="file" title="Browse Document" (change)="httpServertsFileSelectionEvent(i,$event.target.files[0],null)">
+                                       </td>
+                                       <td>
+                                          <input style="margin-top:4px;" type="file" title="Browse Document" (change)="httpServertsFileSelectionEvent(i,null,$event.target.files)" multiple>
+                                       </td>
+                                       <td class="remove" style="text-align: center;">
+                                          <button type="button" class="btn btn-link" (click)="httpServertsRemoveItem(i)">Delete</button>
+                                       </td>
+                                    </tr>                        
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-footer">
+                     <input type="submit" class="form-control" value="Submit" [disabled]="multipleFilesUploadWithHttpServert?.invalid">
+                  </div>
+               </form>        
+            </div>
+        </div>
+  
+      </div>
    </div>
 </div>
 
+<div class="container">
+   <div class="panel-group">
+      <div class="panel panel-default">
+
+      </div>
+    </div>
+</div>
+
+<div class="container">
+   <div class="panel-group">
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            <h4 class="panel-title">
+               <a data-toggle="collapse" href="#collapse11">Base64 Encodeing File</a>
+            </h4>
+         </div>
+         <div id="collapse11" class="panel-collapse collapse">
+            <div class="panel-body">Panel Body</div>
+         </div>
+      </div>
+   </div>
+</div>

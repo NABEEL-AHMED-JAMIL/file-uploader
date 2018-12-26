@@ -29,6 +29,7 @@ public class FileRestController extends BucketRestController implements IBase64I
     private static String answerUrl = "https://stackoverflow.com/questions/51415819/spring-boot-multipart-file-upload-along-with-json-data/53737185#53737185";
     private static String questionUrl = "https://stackoverflow.com/questions/53777228/spring-boot-multiple-files-upload-with-multiple-objects";
 
+    //---------------------------------------------Start---------------------------------------------------//
     /* * * * * * * * * * * * * * *Task-Done* * * * * * * * * *
      * Note :- Ping-Pong Rest-Api Work With Angular-+ version* // Test Pass :- (Postman + Angular cli)
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -93,39 +94,77 @@ public class FileRestController extends BucketRestController implements IBase64I
     @ResponseBody
     public String filesUploadsWithObject(
             @PathVariable(name="bucket-uuid") String bucketUUId, @PathVariable(name="folder") String folder,
-            FileWithObject rawData) { // rawData => (file, files, data)
+            FileWithObject objects) { // rawData => (file, files, data)
         return pingResponse;
     }
+    //---------------------------------------------End---------------------------------------------------//
 
-    /* * * * * * * *
-     * Pending Task*
-     * * * * * * * */
+    //---------------------------------------------Start---------------------------------------------------//
+    /* * * * * * * * * * * * * * *Task-Done* * * * * * * * * * * * * * * * * * *
+     * Note :- Multiple-File's With Object Rest-Api Work With Angular-+ version* // Test Pass :- (Postman)
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     @RequestMapping(value="/filestore/{bucket-uuid}/appsport.com/listOfObjectsWithSingleFile/{folder}",
             method = RequestMethod.POST)
     @ResponseBody
     public String listOfObjectsWithSingleFile(
             @PathVariable(name="bucket-uuid") String bucketUUId, @PathVariable(name="folder") String folder,
-            FileWithObject[] rawData) { // [{file,data},....]
+            FileWithObject objects) { // [{file,data},....]
+        List<FileWithObject> rawData = this.getRawData(objects);
         return pingResponse;
     }
 
+    /* * * * * * * * * * * * * * *Task-Done* * * * * * * * * * * * * * * * * * *
+     * Note :- Multiple-File's With Object Rest-Api Work With Angular-+ version* // Test Pass :- (Postman)
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     @RequestMapping(value="/filestore/{bucket-uuid}/appsport.com/listOfObjectsWithMultipleFiles/{folder}",
             method = RequestMethod.POST)
     @ResponseBody
     public String listOfObjectsWithMultipleFiles(
             @PathVariable(name="bucket-uuid") String bucketUUId, @PathVariable(name="folder") String folder,
-            List<FileWithObject> rawData) { // [{files,data},....]
+            FileWithObject objects) { // [{files,data},....]
+        List<FileWithObject> rawData = this.getRawData(objects);
         return pingResponse;
     }
-	
+
+    /* * * * * * * * * * * * * * *Task-Done* * * * * * * * * * * * * * * * * * *
+     * Note :- Multiple-File's With Object Rest-Api Work With Angular-+ version* // Test Pass :- (Postman)
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	@RequestMapping(value="/filestore/{bucket-uuid}/appsport.com/listOfObjectsWithFiles/{folder}",
             method = RequestMethod.POST)
     @ResponseBody
     public String listOfObjectsWithFiles(
             @PathVariable(name="bucket-uuid") String bucketUUId, @PathVariable(name="folder") String folder,
-            List<FileWithObject> rawData) { // [{file,files,data},....]
+            FileWithObject objects) { // [{file,files,data},....]
+        List<FileWithObject> rawData = this.getRawData(objects);
         return pingResponse;
     }
+
+    // separate the main list from the object
+    private List<FileWithObject> getRawData(FileWithObject objects) {
+	    this.displayData(objects.getRawData());
+	    return objects.getRawData();
+	}
+	// display the data coming from the client side
+	private void displayData(List<FileWithObject> rawData) {
+        rawData.stream().forEach(fileWithObject -> {
+            logger.warn("-----------------------------------");
+            if(fileWithObject.getFile() != null) {
+                MultipartFile file = fileWithObject.getFile();
+                logger.info("File Name :- " + file.getOriginalFilename());
+            }
+            if(fileWithObject.getData() != null) {
+                logger.info("Data :- " + fileWithObject.getData());
+            }
+            if(fileWithObject.getFiles() != null) {
+                fileWithObject.getFiles().stream().forEach((object) -> {
+                    MultipartFile file = (MultipartFile) object;
+                    logger.info("File's Name :- " + file.getOriginalFilename());
+                });
+            }
+            logger.warn("-----------------------------------");
+        });
+    }
+    //---------------------------------------------End-----------------------------------------------------//
 
     @Override
     public String singleFileUploadWithBase64Object(String bucketUUId, String folder, Base64File base64File) {

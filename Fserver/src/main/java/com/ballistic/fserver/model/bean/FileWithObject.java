@@ -18,12 +18,12 @@ public class FileWithObject<T> {
     @JsonRawValue
     @JsonProperty("data")
     private T data;
+    // work like (meta-data)
+    List<FileWithObject> rawData;
 
     public FileWithObject() { }
 
-    public FileWithObject(T data) {
-        this.data = data;
-    }
+    public FileWithObject(T data) { this.data = data; }
 
     public FileWithObject(MultipartFile file, T data) {
         this.file = file;
@@ -35,6 +35,8 @@ public class FileWithObject<T> {
         this.data = data;
     }
 
+    public FileWithObject(List<FileWithObject> rawData) { this.rawData = rawData; }
+
     public MultipartFile getFile() { return file; }
     public void setFile(MultipartFile file) { this.file = file; }
 
@@ -43,6 +45,9 @@ public class FileWithObject<T> {
 
     public T getData() { return data; }
     public void setData(T data) { this.data = data; }
+
+    public List<FileWithObject> getRawData() { return rawData; }
+    public void setRawData(List<FileWithObject> rawData) { this.rawData = rawData; }
 
     @Override
     public String toString() {

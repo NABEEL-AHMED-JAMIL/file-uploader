@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FileserviceService } from './fileservice.service';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 
-
 export interface Base64File {
   filename:string;
   filetype:string;
@@ -24,7 +23,6 @@ export interface FileInfo {
   file_name:string;
   file_size:number;
 }
-
 
 @Component({
   selector: 'app-root',
@@ -599,16 +597,15 @@ export class AppComponent implements OnInit {
         if(response['response'] == "pong") {
           setTimeout(() => { 
             alert("You are Successfully Send the Request");
-          this.singlefiles = [];
-          this.multiplefiles = [];
-        },1000);
-      }
-    },error => {
-      console.log("Error :- " + JSON.stringify(error));
-    });
+            this.singlefiles = [];
+            this.multiplefiles = [];
+          },1000);
+        }
+      },error => {
+        console.log("Error :- " + JSON.stringify(error));
+      });
     }
   };
-
 
   public get httpServertsItems():FormArray { return this.multipleFilesUploadWithHttpServert.get('items') as FormArray; };
 
@@ -627,11 +624,6 @@ export class AppComponent implements OnInit {
       this.multiplefiles[index] = files;
     }
   }
-
-
-
-
-
 
 
 
