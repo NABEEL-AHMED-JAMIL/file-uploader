@@ -1,9 +1,11 @@
-package com.ballistic.fserver.model.bean;
+package com.ballistic.fserver.model.dto.base64;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.google.gson.Gson;
+
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,7 +42,6 @@ public class Base64FileWithObject<T> {
     public void setData(T data) { this.data = data; }
 
     @Override
-    public String toString() {
-        return "Base64FileWithObject{" + "file=" + file + ", files=" + files + ", data=" + data + '}';
-    }
+    public String toString() { return new Gson().toJson(this); }
+
 }

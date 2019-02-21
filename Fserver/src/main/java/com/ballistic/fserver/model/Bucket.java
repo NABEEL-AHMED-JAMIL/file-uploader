@@ -1,21 +1,24 @@
 package com.ballistic.fserver.model;
 
+import com.google.gson.Gson;
+
 import java.sql.Date;
 import java.util.List;
 
 public class Bucket {
 
     private String id;
-    private String uuid; // token decode the uuid
-    private String name;
-    private String token; // token? :- token:-bucket' -:
+    private String uuid; // bucket-uuid
+    private String name; // name distinct in user-id
+    private String token; // token? :- bucket-access-token -:
     private String url; // bucket store location
-    private List<String> downloadUrl;
-    private Date deleteDate;
-    private Date updateDate;
-    private Date createDate;
-    private Boolean isDelete;
-    private String userId;
+    private List<String> downloadUrl; // bucket download url's more then 1 create but distinct
+    private Date deleteDate; // delete date
+    private Date updateDate; // update date
+    private Date createDate; // create date
+    private Boolean isDelete; // base 'true' when delete-Date added
+    private String userId; // + ---> store as user_uuid
+    private List<Store> stores; // (file,folder-file,folder-folder-file)
 
     public Bucket() {}
 
@@ -81,13 +84,10 @@ public class Bucket {
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 
+    public List<Store> getStores() { return stores; }
+    public void setStores(List<Store> stores) { this.stores = stores; }
+
     @Override
-    public String toString() {
-        return "Bucket{" +
-                "id='" + id + '\'' + ", uuid='" + uuid + '\'' + ", name='" + name + '\'' +
-                ", token='" + token + '\'' + ", url='" + url + '\'' + ", downloadUrl=" + downloadUrl +
-                ", deleteDate=" + deleteDate + ", updateDate=" + updateDate + ", createDate=" + createDate +
-                ", isDelete=" + isDelete + ", userId='" + userId + '\'' +
-                '}';
-    }
+    public String toString() { return new Gson().toJson(this); }
+
 }

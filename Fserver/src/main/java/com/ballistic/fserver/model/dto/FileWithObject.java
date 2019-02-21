@@ -1,9 +1,10 @@
-package com.ballistic.fserver.model.bean;
+package com.ballistic.fserver.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.google.gson.Gson;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
@@ -50,7 +51,6 @@ public class FileWithObject<T> {
     public void setRawData(List<FileWithObject> rawData) { this.rawData = rawData; }
 
     @Override
-    public String toString() {
-        return "FileWithObject{" + "file=" + file + ", files=" + files + ", data=" + data + '}';
-    }
+    public String toString() { return new Gson().toJson(this); }
+
 }
