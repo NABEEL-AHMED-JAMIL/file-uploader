@@ -97,10 +97,7 @@ export class AppComponent implements OnInit {
         this.buildItem(1),this.buildItem(1)        
       ])
     });
-   //------------------------End----------------------
     
-
-
     //-------------------------------
     this.objectsWithSingleFile = this.fb.group({
       objects:this.fb.array([this.buildItem(2)])
@@ -625,11 +622,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-
-
-
-
-
   /* * * * * * * * * * * * * * * * * * * *
   * Handle the Files With Obj Spring Api *
   * * * * * * * * * * * * * * * * * * * **/
@@ -641,7 +633,6 @@ export class AppComponent implements OnInit {
   public listOfObjectsWithSingleFile(): any {
     if(this.isServerActive()) {
       this.objectsWithSingleFile.get("objects").value.forEach(object => {
-        
       });
     }    
   }
